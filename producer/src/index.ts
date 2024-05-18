@@ -17,24 +17,30 @@ const queue = new Queue('Cities', {
 
 // Endpoints
 // Add job to queue
-const addJob = async () => {
+app.post('/job', async (req, res) => {
+    // Create a new id for job
     const jobId = uuidv4();
+
+    // Add job to queue
     await queue.add(`job-${jobId}`, {
-        text: 'Hello, this job has id ' + jobId
-    })
+        text: 'Hello, this job has id ' + jobId,
+    });
+
+    // Log newly created job and send job id back
     console.log(`Added job ${jobId} to the queue`);
-}
+    res.send({ jobId: jobId });
+})
 
 // View list of jobs
-const getJobs = async () => {
-    // getJobs takes an array of statuses
-    // TODO - research the statuses. I believe most jobs have 'waiting' status but not 100% sure
-    const jobs = await queue.getJobs(['active', 'delayed', 'waiting']);
-    console.log(jobs);
-}
+app.get('/jobs', async (req, res) => {
+    /** getJobs takes an array of statuses
+     * TODO - research statuses. I believe most jobs have 'waiting' status but not 100% sure
+     */
+    const jobs = await queue.getJobs(['active', 'waiting']);
 
-addJob();
-getJobs();
+    console.log(`Displaying ${jobs.length} jobs`);
+    res.send({ jobs: jobs })
+})
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}...`);
