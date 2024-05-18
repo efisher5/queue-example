@@ -2,10 +2,22 @@
   "name": "producer",
   "version": "1.0.0",
   "description": "producer for queue example",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
+    "build": "rimraf dist && tsc",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Evan Fisher",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bullmq": "^5.7.9",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.12",
+    "rimraf": "^5.0.7",
+    "typescript": "^5.4.5"
+  }
 }
