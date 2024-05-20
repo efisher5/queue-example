@@ -1,4 +1,4 @@
-import { Queue } from "bullmq";
+import { Redis } from "ioredis";
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
 
@@ -6,25 +6,19 @@ import { v4 as uuidv4 } from "uuid";
 const app = express();
 const port = 3000;
 
-// Queue setup
-// Create queue
-const queue = new Queue('Cities', {
-    connection: {
-        host: 'localhost',
-        port: 6379
-    }
-});
+// Establish Redis connection
+const redis = new Redis();
 
 // Endpoints
 // Add job to queue
 app.post('/job', async (req, res) => {
     // Create a new id for job
     const jobId = uuidv4();
+    const obj = { text: `This job has id: ${jobId}` };
 
     // Add job to queue
-    await queue.add(`job-${jobId}`, {
-        text: 'Hello, this job has id ' + jobId,
-    });
+    // Note: Redis only accepts string values
+    await redis.lpush('q-example', JSON.stringify(obj))
 
     // Log newly created job and send job id back
     console.log(`Added job ${jobId} to the queue`);
@@ -33,10 +27,8 @@ app.post('/job', async (req, res) => {
 
 // View list of jobs
 app.get('/jobs', async (req, res) => {
-    /** getJobs takes an array of statuses
-     * TODO - research statuses. I believe most jobs have 'waiting' status but not 100% sure
-     */
-    const jobs = await queue.getJobs(['active', 'waiting']);
+    // Get the full range of jobs
+    const jobs = await redis.lrange('q-example', 0, -1);
 
     console.log(`Displaying ${jobs.length} jobs`);
     res.send({ jobs: jobs })

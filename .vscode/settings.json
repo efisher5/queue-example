@@ -1,0 +1,8 @@
+{
+    "python.autoComplete.extraPaths": [
+        "./consumer"
+    ],
+    "python.analysis.extraPaths": [
+        "./consumer"
+    ]
+}
