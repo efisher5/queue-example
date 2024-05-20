@@ -1,3 +1,4 @@
 .DS_Store
 /producer/node_modules
 /producer/dist
+/consumer/__pycache__
