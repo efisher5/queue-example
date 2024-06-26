@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "bullmq": "^5.7.9",
+    "celery-node": "^0.5.9",
     "express": "^4.19.2",
     "ioredis": "^5.4.1",
     "uuid": "^9.0.1"

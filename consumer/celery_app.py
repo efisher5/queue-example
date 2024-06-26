@@ -3,8 +3,8 @@ import redis
 
 # Creating Celery instance and configuration
 # Note that first param doesn't have to match queue name
-app = Celery('tasks', broker='redis://localhost:6379')
-app.conf.update(
+celery_app = Celery('tasks', broker='redis://localhost:6379')
+celery_app.conf.update(
     task_serializer='json',
     accept_content=['json'],
     result_serializer='json',
@@ -12,7 +12,7 @@ app.conf.update(
     enable_utc=True
 )
 
-@app.task
+@celery_app.task
 # Logic for 'processing' the task
 def consume_message(data):
     print('Consumed data: {data}')
