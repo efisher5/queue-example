@@ -11,7 +11,7 @@ const port = 3000;
 /**
  * Create celery client
  * Note that there is a backend param here despite not having one on Python side
- * node-celery requires a parameter here. It will default to 'aamp://' (RabbitMQ URL)
+ * node-celery requires a parameter here. It will default to 'amqp://' (RabbitMQ URL)
  * if set to undefined. This will cause a connection refusal error
  */
 const celeryClient = celery.createClient(
